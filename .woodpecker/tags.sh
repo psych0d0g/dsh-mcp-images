@@ -1,5 +1,6 @@
 #!/bin/sh
-# Print the image tags for one image dir: "<tag>,latest", where <tag> is the
+# Print the image tags for one image dir, one per line (the buildx
+# plugin's tags_file format): <tag> and latest, where <tag> is the
 # Dockerfile's version ARGs joined in the order given (first one bare, the
 # rest as <prefix><value>), so every version bump produces a new tag.
 # Usage: tags.sh <dir> <ARG> [<prefix>=<ARG> ...]
@@ -13,4 +14,4 @@ for spec in "$@"; do
   [ -n "$v" ] || { echo "no ARG ${spec#*=} in $dir/Dockerfile" >&2; exit 1; }
   tag="$tag-${spec%%=*}$v"
 done
-printf '%s,latest\n' "$tag"
+printf '%s\nlatest\n' "$tag"

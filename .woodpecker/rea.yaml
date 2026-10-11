@@ -1,5 +1,5 @@
 # Builds harbor.crystalnet.org/library/dsh-mcp-rea on changes under rea/.
-# Tags: <versions from rea/Dockerfile ARGs>,latest (see tags.sh).
+# Tags: <versions from rea/Dockerfile ARGs> and latest (see tags.sh).
 when:
   - event: [push, manual]
     branch: ${CI_REPO_DEFAULT_BRANCH}

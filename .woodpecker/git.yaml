@@ -1,5 +1,5 @@
 # Builds harbor.crystalnet.org/library/dsh-mcp-git on changes under git/.
-# Tags: <versions from git/Dockerfile ARGs>,latest (see tags.sh).
+# Tags: <versions from git/Dockerfile ARGs> and latest (see tags.sh).
 when:
   - event: [push, manual]
     branch: ${CI_REPO_DEFAULT_BRANCH}
