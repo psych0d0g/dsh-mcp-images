@@ -1,0 +1,29 @@
+# Builds harbor.crystalnet.org/library/dsh-mcp-rea on changes under rea/.
+# Tags: <versions from rea/Dockerfile ARGs>,latest (see tags.sh).
+when:
+  - event: [push, manual]
+    branch: ${CI_REPO_DEFAULT_BRANCH}
+    path:
+      include: ['rea/**', '.woodpecker/rea.yaml', '.woodpecker/tags.sh']
+
+steps:
+  tags:
+    image: harbor.crystalnet.org/dockerhub-proxy/library/alpine:3.22
+    commands:
+      - sh .woodpecker/tags.sh rea REA_VERSION ghidra=GHIDRA_VERSION proxy=MCP_PROXY_VERSION > rea/.tags
+      - cat rea/.tags
+  docker-build:
+    image: woodpeckerci/plugin-docker-buildx:6.0.3
+    settings:
+      repo: harbor.crystalnet.org/library/dsh-mcp-rea
+      logins:
+      - registry: https://harbor.crystalnet.org/
+        username: robot$library+woodpecker
+        password:
+          from_secret: harbor_token
+      registry: harbor.crystalnet.org
+      context: rea
+      dockerfile: rea/Dockerfile
+      tags_file: rea/.tags
+      platforms: linux/amd64
+      dry_run: false

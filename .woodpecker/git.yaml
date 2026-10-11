@@ -1,0 +1,29 @@
+# Builds harbor.crystalnet.org/library/dsh-mcp-git on changes under git/.
+# Tags: <versions from git/Dockerfile ARGs>,latest (see tags.sh).
+when:
+  - event: [push, manual]
+    branch: ${CI_REPO_DEFAULT_BRANCH}
+    path:
+      include: ['git/**', '.woodpecker/git.yaml', '.woodpecker/tags.sh']
+
+steps:
+  tags:
+    image: harbor.crystalnet.org/dockerhub-proxy/library/alpine:3.22
+    commands:
+      - sh .woodpecker/tags.sh git MCP_SERVER_GIT_VERSION proxy=MCP_PROXY_VERSION > git/.tags
+      - cat git/.tags
+  docker-build:
+    image: woodpeckerci/plugin-docker-buildx:6.0.3
+    settings:
+      repo: harbor.crystalnet.org/library/dsh-mcp-git
+      logins:
+      - registry: https://harbor.crystalnet.org/
+        username: robot$library+woodpecker
+        password:
+          from_secret: harbor_token
+      registry: harbor.crystalnet.org
+      context: git
+      dockerfile: git/Dockerfile
+      tags_file: git/.tags
+      platforms: linux/amd64
+      dry_run: false
