@@ -16,10 +16,16 @@ ARG MCP_PROXY_VERSION=0.13.0
 ARG GHIDRA_VERSION=12.1.4
 ARG GHIDRA_BUILD_DATE=20260921
 ARG GHIDRA_SHA256=ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db
+# Bump for image-only changes (packages, entrypoint) without a version
+# bump above: it is part of the tag, so the cluster pulls the new image.
+ARG IMAGE_REVISION=2
 
+# procps: REA tracks the Ghidra process group it launches with
+# `ps -axo pid=,ppid=,pgid=,...`; without it every Ghidra launch fails
+# ("Ghidra headless launch failed", spawn ps ENOENT).
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-      openjdk-21-jdk-headless python3 python3-venv tini ca-certificates curl unzip \
+      openjdk-21-jdk-headless python3 python3-venv tini ca-certificates curl unzip procps \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL -o /tmp/ghidra.zip \

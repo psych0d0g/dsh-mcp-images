@@ -8,6 +8,9 @@ FROM python:3.13-slim-trixie
 ARG MCP_SERVER_GIT_VERSION=2026.10.10
 # renovate: datasource=pypi depName=mcp-proxy
 ARG MCP_PROXY_VERSION=0.13.0
+# Bump for image-only changes (packages, entrypoint) without a version
+# bump above: it is part of the tag, so the cluster pulls the new image.
+ARG IMAGE_REVISION=1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git tini ca-certificates \

@@ -10,7 +10,7 @@ steps:
   tags:
     image: harbor.crystalnet.org/dockerhub-proxy/library/alpine:3.22
     commands:
-      - sh .woodpecker/tags.sh git MCP_SERVER_GIT_VERSION proxy=MCP_PROXY_VERSION > git/.tags
+      - sh .woodpecker/tags.sh git MCP_SERVER_GIT_VERSION proxy=MCP_PROXY_VERSION r=IMAGE_REVISION > git/.tags
       - cat git/.tags
   docker-build:
     image: woodpeckerci/plugin-docker-buildx:6.0.3

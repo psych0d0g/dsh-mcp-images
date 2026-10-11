@@ -23,5 +23,6 @@ manifests live in `k8s_cluster/deployments/dsh-mcp/`.
 - Versions are `ARG`s in each Dockerfile. A `# renovate:` comment above an ARG
   lets Renovate bump it. Each image is tagged `<versions>` and `latest`, built from
   those ARGs by `.woodpecker/tags.sh`, so every bump yields a new tag.
+  For image-only changes, bump `IMAGE_REVISION` (the `-rN` suffix).
 - `GHIDRA_*` in `rea/Dockerfile` has no Renovate comment on purpose: it must
   stay on the Ghidra line REA verifies against (see the comment there).
